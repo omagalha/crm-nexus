@@ -208,7 +208,6 @@ export default function Configuracoes() {
               <input type="password" value={senhaConfirm} onChange={(e) => setSenhaConfirm(e.target.value)} placeholder="Repita a nova senha" required />
             </label>
             {senhaError && <div className="config-msg config-msg-err">{senhaError}</div>}
-            {senhaMsg && <div className="config-msg config-msg-ok">{senhaMsg}</div>}
             <div className="form-actions">
               <Button type="submit" disabled={savingSenha}>
                 <KeyRound size={16} />
