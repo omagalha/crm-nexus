@@ -224,14 +224,30 @@ create index tarefas_responsavel_idx on public.tarefas(responsavel_id);
 create index tarefas_prazo_idx      on public.tarefas(prazo);
 
 -- ============================================================
+-- IDEB HISTÓRICO
+-- ============================================================
+create table public.ideb_historico (
+  id            uuid default uuid_generate_v4() primary key,
+  lead_id       uuid references public.leads(id) on delete cascade not null,
+  ano           integer not null,
+  anos_iniciais numeric(4,2),
+  anos_finais   numeric(4,2),
+  created_at    timestamptz default now(),
+  unique(lead_id, ano)
+);
+
+create index ideb_lead_idx on public.ideb_historico(lead_id);
+
+-- ============================================================
 -- ROW LEVEL SECURITY
 -- ============================================================
-alter table public.perfis    enable row level security;
-alter table public.leads     enable row level security;
-alter table public.contatos  enable row level security;
-alter table public.interacoes enable row level security;
-alter table public.propostas enable row level security;
-alter table public.tarefas   enable row level security;
+alter table public.perfis         enable row level security;
+alter table public.leads          enable row level security;
+alter table public.contatos       enable row level security;
+alter table public.interacoes     enable row level security;
+alter table public.propostas      enable row level security;
+alter table public.tarefas        enable row level security;
+alter table public.ideb_historico enable row level security;
 
 -- Helper: retorna perfil do usuário logado
 create or replace function public.meu_perfil()
@@ -277,3 +293,9 @@ create policy "tarefas: leitura" on public.tarefas
   for select using (auth.role() = 'authenticated');
 create policy "tarefas: escrita" on public.tarefas
   for all using (public.meu_perfil() in ('administrador','diretor','comercial','administrativo'));
+
+-- IDEB HISTÓRICO
+create policy "ideb: leitura" on public.ideb_historico
+  for select using (auth.role() = 'authenticated');
+create policy "ideb: escrita" on public.ideb_historico
+  for all using (public.meu_perfil() in ('administrador','diretor','comercial'));

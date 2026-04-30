@@ -18,6 +18,7 @@ import {
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Button from '../components/Button.jsx';
+import IdebChart from '../components/IdebChart.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { useLead } from '../hooks/useLead.js';
@@ -360,7 +361,7 @@ export default function LeadDetails() {
       </section>
 
       {/* Dados educacionais */}
-      {(lead.nome_prefeito || lead.secretario_educacao || lead.num_alunos_estimado || lead.ideb) && (
+      {(lead.nome_prefeito || lead.secretario_educacao || lead.num_alunos_estimado || lead.num_escolas) && (
         <section className="panel">
           <div className="panel-header">
             <div><span>Contexto</span><h2>Dados educacionais</h2></div>
@@ -370,11 +371,12 @@ export default function LeadDetails() {
             {lead.secretario_educacao  && <div><p>Sec. de Educação</p><strong>{lead.secretario_educacao}</strong></div>}
             {lead.num_alunos_estimado  && <div><p>Alunos estimados</p><strong>{lead.num_alunos_estimado.toLocaleString('pt-BR')}</strong></div>}
             {lead.num_escolas          && <div><p>Escolas</p><strong>{lead.num_escolas}</strong></div>}
-            {lead.ideb                 && <div><p>IDEB Anos Iniciais</p><strong>{lead.ideb}</strong></div>}
-            {lead.saeb                 && <div><p>IDEB Anos Finais</p><strong>{lead.saeb}</strong></div>}
           </div>
         </section>
       )}
+
+      {/* Evolução IDEB */}
+      <IdebChart leadId={leadId} />
 
       {/* Interações */}
       <section className="panel">

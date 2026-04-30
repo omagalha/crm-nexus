@@ -2771,3 +2771,106 @@ th {
     min-width: 80px;
   }
 }
+
+/* ============================================================
+   IDEB Chart
+   ============================================================ */
+.ideb-chart-wrapper {
+  margin: 0 0 20px;
+}
+
+.ideb-add-form {
+  background: var(--nexus-bg);
+  border: 1px solid var(--nexus-border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.ideb-form-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ideb-form-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--nexus-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ideb-form-row input {
+  padding: 7px 10px;
+  border: 1px solid var(--nexus-border);
+  border-radius: var(--radius-btn);
+  font-size: 0.92rem;
+  background: var(--nexus-light);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ideb-form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ideb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.ideb-table th {
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--nexus-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--nexus-border);
+}
+
+.ideb-table td {
+  padding: 8px 8px;
+  border-bottom: 1px solid var(--nexus-border);
+  color: var(--nexus-dark);
+}
+
+.ideb-table-row {
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.ideb-table-row:hover {
+  background: var(--nexus-bg);
+}
+
+.ideb-table tr:last-child td {
+  border-bottom: none;
+}
+
+.ideb-empty {
+  color: var(--nexus-muted);
+  font-size: 0.88rem;
+  padding: 12px 0 4px;
+}
+
+.ideb-error {
+  color: var(--nexus-danger);
+  font-size: 0.88rem;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 600px) {
+  .ideb-form-row {
+    grid-template-columns: 1fr;
+  }
+}
