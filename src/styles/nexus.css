@@ -455,11 +455,6 @@
 }
 
 .municipio-card,
-.contact-card {
-  display: grid;
-  gap: 0;
-  padding: 0;
-}
 
 /* Acordeão municípios */
 .municipio-card-trigger {
@@ -1987,30 +1982,84 @@ th {
 }
 
 /* Gestão de contatos no lead */
-.contact-card-header {
-  align-items: flex-start;
+.contact-card {
+  align-items: center;
+  border: 1px solid var(--nexus-border);
+  border-radius: var(--radius-sm);
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+.contact-avatar {
+  align-items: center;
+  background: var(--nexus-primary);
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.contact-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-name-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.contact-name-row strong {
+  font-size: 0.95rem;
 }
 
 .contact-badge {
   background: rgba(61, 220, 104, 0.12);
   border-radius: 999px;
   color: var(--nexus-accent);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  margin-left: 8px;
   padding: 2px 8px;
-  vertical-align: middle;
 }
 
 .contact-cargo {
   color: var(--nexus-muted);
   display: block;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.contact-channels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.contact-channel {
+  align-items: center;
+  color: var(--nexus-muted);
+  display: inline-flex;
   font-size: 0.82rem;
-  font-weight: 400;
-  margin-top: 2px;
+  gap: 5px;
+  text-decoration: none;
+}
+
+.contact-channel-whatsapp {
+  color: var(--nexus-accent);
+  font-weight: 600;
+}
+
+.contact-channel-whatsapp:hover {
+  color: var(--nexus-secondary);
 }
 
 .contact-actions {

@@ -332,36 +332,49 @@ export default function LeadDetails() {
             <div className="contact-stack">
               {lead.contatos.map((c) => (
                 <div key={c.id} className="contact-card">
-                  <div className="contact-card-header">
-                    <div>
+                  <div className="contact-avatar">
+                    {(c.nome || '?')[0].toUpperCase()}
+                  </div>
+                  <div className="contact-info">
+                    <div className="contact-name-row">
                       <strong>{c.nome}</strong>
                       {c.eh_principal && <span className="contact-badge">Principal</span>}
-                      <span className="contact-cargo">{CARGO_LABEL[c.cargo] ?? c.cargo}</span>
                     </div>
-                    <div className="contact-actions">
-                      <button type="button" className="icon-btn" title="Editar" onClick={() => openEditContato(c)}>
-                        <Pencil size={13} />
-                      </button>
-                      <button type="button" className="icon-btn icon-btn-danger" title="Remover" onClick={() => handleDeleteContato(c.id)}>
-                        <Trash2 size={13} />
-                      </button>
+                    {c.cargo && <span className="contact-cargo">{CARGO_LABEL[c.cargo] ?? c.cargo}</span>}
+                    <div className="contact-channels">
+                      {c.email && (
+                        <a href={`mailto:${c.email}`} className="contact-channel">
+                          <Mail size={13} /> {c.email}
+                        </a>
+                      )}
+                      {c.telefone && (
+                        <span className="contact-channel">
+                          <Phone size={13} /> {c.telefone}
+                        </span>
+                      )}
+                      {c.whatsapp && (
+                        <a
+                          className="contact-channel contact-channel-whatsapp"
+                          href={whatsappUrl(
+                            c.whatsapp,
+                            `Olá ${c.nome.split(' ')[0]}! Aqui é o ${perfil?.nome ?? 'Nexus Educação'}. Gostaria de dar continuidade à nossa conversa${lead.produto_interesse ? ` sobre ${PRODUTO_LABEL[lead.produto_interesse]}` : ''} para ${lead.municipio}/${lead.uf}. Tudo bem?`,
+                          )}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <MessageCircle size={13} /> WhatsApp
+                        </a>
+                      )}
                     </div>
                   </div>
-                  {c.email    && <p><Mail size={14} /> {c.email}</p>}
-                  {c.telefone && <p><Phone size={14} /> {c.telefone}</p>}
-                  {c.whatsapp && (
-                    <a
-                      className="whatsapp-link"
-                      href={whatsappUrl(
-                        c.whatsapp,
-                        `Olá ${c.nome.split(' ')[0]}! Aqui é o ${perfil?.nome ?? 'Nexus Educação'}. Gostaria de dar continuidade à nossa conversa${lead.produto_interesse ? ` sobre ${PRODUTO_LABEL[lead.produto_interesse]}` : ''} para ${lead.municipio}/${lead.uf}. Tudo bem?`,
-                      )}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <MessageCircle size={14} /> Abrir WhatsApp
-                    </a>
-                  )}
+                  <div className="contact-actions">
+                    <button type="button" className="icon-btn" title="Editar" onClick={() => openEditContato(c)}>
+                      <Pencil size={13} />
+                    </button>
+                    <button type="button" className="icon-btn icon-btn-danger" title="Remover" onClick={() => handleDeleteContato(c.id)}>
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
