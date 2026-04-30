@@ -333,12 +333,21 @@
   margin-bottom: 12px;
 }
 
+.pipeline-column header > div {
+  min-width: 0;
+}
+
 .pipeline-column header small,
 .pipeline-column header span {
   color: var(--nexus-muted);
   display: block;
   font-size: 0.78rem;
   margin-top: 4px;
+}
+
+.pipeline-column header > span {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .pipeline-list {
