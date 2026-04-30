@@ -16,14 +16,14 @@ import {
   Video,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/Button.jsx';
 import IdebChart from '../components/IdebChart.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { useLead } from '../hooks/useLead.js';
 import { isCalendarConnected, syncLeadCalendar } from '../services/googleCalendarService.js';
-import { addContato, createInteraction, deleteContato, setLeadGcalEventId, updateContato } from '../services/leadsService.js';
+import { addContato, createInteraction, deleteContato, deleteLead, setLeadGcalEventId, updateContato } from '../services/leadsService.js';
 
 const initialContato = { nome: '', cargo: '', email: '', telefone: '', whatsapp: '', observacoes: '', eh_principal: false };
 
@@ -83,9 +83,25 @@ function whatsappUrl(number, message) {
 
 export default function LeadDetails() {
   const { leadId } = useParams();
+  const navigate = useNavigate();
   const { lead, loading, error, reload } = useLead(leadId);
   const { perfil } = useAuth();
   const showToast = useToast();
+
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleDeleteLead() {
+    if (!window.confirm(`Excluir o lead "${lead.municipio}/${lead.uf}"? Esta ação não pode ser desfeita.`)) return;
+    setDeleting(true);
+    try {
+      await deleteLead(leadId);
+      showToast('Lead excluído.', 'success');
+      navigate('/leads');
+    } catch (err) {
+      showToast(err.message || 'Não foi possível excluir o lead.', 'error');
+      setDeleting(false);
+    }
+  }
 
   // interações
   const [interactionForm, setInteractionForm] = useState(initialInteraction);
@@ -237,6 +253,15 @@ export default function LeadDetails() {
           <p>{lead.etapa}</p>
         </div>
         <div className="detail-actions">
+          <button
+            type="button"
+            className="icon-btn icon-btn-danger"
+            title="Excluir lead"
+            disabled={deleting}
+            onClick={handleDeleteLead}
+          >
+            <Trash2 size={15} />
+          </button>
           <Link to={`/leads/${leadId}/editar`} className="btn btn-ghost">Editar</Link>
           <Button type="button" onClick={() => openInteractionForm('ligacao')}>
             + Registrar interação

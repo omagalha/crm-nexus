@@ -318,6 +318,8 @@
   background: #f2f1ef;
   border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
   min-height: 420px;
   min-width: 180px;
   padding: 12px;
@@ -342,6 +344,11 @@
 .pipeline-list {
   display: grid;
   gap: 10px;
+  align-content: start;
+  flex: 1;
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
+  padding-right: 2px;
 }
 
 .lead-card {

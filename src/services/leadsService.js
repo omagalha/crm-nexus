@@ -259,6 +259,11 @@ export async function deleteContato(contatoId) {
   if (error) throw error;
 }
 
+export async function deleteLead(leadId) {
+  const { error } = await supabase.from('leads').delete().eq('id', leadId);
+  if (error) throw error;
+}
+
 export async function getPropostas() {
   const { data, error } = await supabase
     .from('propostas')

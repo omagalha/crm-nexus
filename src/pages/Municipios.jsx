@@ -1,7 +1,9 @@
-import { ChevronDown, Search } from 'lucide-react';
+import { ChevronDown, Search, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useToast } from '../context/ToastContext.jsx';
 import { useLeads } from '../hooks/useLeads.js';
+import { deleteLead } from '../services/leadsService.js';
 
 const PRODUCT_LABEL = {
   simplifica_sim: 'Simplifica Sim',
@@ -31,14 +33,30 @@ function formatDate(value) {
 }
 
 export default function Municipios() {
-  const { leads, loading, error } = useLeads();
+  const { leads, loading, error, reload } = useLeads();
+  const showToast = useToast();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
   const [uf, setUf] = useState('');
   const [expandedId, setExpandedId] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   function toggleCard(id) {
     setExpandedId((cur) => (cur === id ? null : id));
+  }
+
+  async function handleDelete(lead) {
+    if (!window.confirm(`Excluir "${lead.municipio}/${lead.uf}"? Esta ação não pode ser desfeita.`)) return;
+    setDeletingId(lead.id);
+    try {
+      await deleteLead(lead.id);
+      showToast('Lead excluído.', 'success');
+      reload();
+    } catch (err) {
+      showToast(err.message || 'Não foi possível excluir.', 'error');
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   const ufOptions = useMemo(() => {
@@ -164,9 +182,20 @@ export default function Municipios() {
                         {lead.dataAcao && <small>{formatDate(lead.dataAcao)}</small>}
                       </div>
                     )}
-                    <Link to={`/leads/${lead.id}`} className="btn btn-ghost">
-                      Ver detalhes
-                    </Link>
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      <Link to={`/leads/${lead.id}`} className="btn btn-ghost">
+                        Ver detalhes
+                      </Link>
+                      <button
+                        type="button"
+                        className="icon-btn icon-btn-danger"
+                        title="Excluir lead"
+                        disabled={deletingId === lead.id}
+                        onClick={() => handleDelete(lead)}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </article>
