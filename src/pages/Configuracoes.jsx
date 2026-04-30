@@ -88,8 +88,9 @@ export default function Configuracoes() {
     try {
       await updateMembroRole(userId, role);
       setEquipe((cur) => cur.map((m) => m.id === userId ? { ...m, perfil: role } : m));
+      showToast('Papel atualizado com sucesso.', 'success');
     } catch (err) {
-      alert(err.message || 'Não foi possível atualizar o papel.');
+      showToast(err.message || 'Não foi possível atualizar o papel.', 'error');
     }
   }
 

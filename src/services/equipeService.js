@@ -11,12 +11,16 @@ export async function getEquipe() {
 }
 
 export async function updateMembroRole(userId, role) {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('perfis')
     .update({ perfil: role })
-    .eq('id', userId);
+    .eq('id', userId)
+    .select('id');
 
   if (error) throw error;
+  if (!data || data.length === 0) {
+    throw new Error('Permissão negada. Verifique as políticas de acesso no Supabase.');
+  }
 }
 
 export async function toggleMembroAtivo(userId, ativo) {
