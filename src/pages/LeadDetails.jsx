@@ -370,8 +370,8 @@ export default function LeadDetails() {
             {lead.secretario_educacao  && <div><p>Sec. de Educação</p><strong>{lead.secretario_educacao}</strong></div>}
             {lead.num_alunos_estimado  && <div><p>Alunos estimados</p><strong>{lead.num_alunos_estimado.toLocaleString('pt-BR')}</strong></div>}
             {lead.num_escolas          && <div><p>Escolas</p><strong>{lead.num_escolas}</strong></div>}
-            {lead.ideb                 && <div><p>IDEB</p><strong>{lead.ideb}</strong></div>}
-            {lead.saeb                 && <div><p>SAEB</p><strong>{lead.saeb}</strong></div>}
+            {lead.ideb                 && <div><p>IDEB Anos Iniciais</p><strong>{lead.ideb}</strong></div>}
+            {lead.saeb                 && <div><p>IDEB Anos Finais</p><strong>{lead.saeb}</strong></div>}
           </div>
         </section>
       )}

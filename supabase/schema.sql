@@ -244,6 +244,9 @@ create policy "perfil: leitura" on public.perfis
   for select using (id = auth.uid() or public.meu_perfil() in ('administrador','diretor'));
 create policy "perfil: edição própria" on public.perfis
   for update using (id = auth.uid()) with check (id = auth.uid());
+create policy "perfil: edição por admin" on public.perfis
+  for update using (public.meu_perfil() in ('admin','diretor'))
+  with check (public.meu_perfil() in ('admin','diretor'));
 
 -- LEADS
 create policy "leads: leitura" on public.leads

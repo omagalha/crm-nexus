@@ -254,12 +254,12 @@ export default function LeadForm() {
               <input name="num_escolas" type="number" min="0" value={form.num_escolas} onChange={updateField} />
             </label>
             <label>
-              IDEB
+              IDEB Anos Iniciais
               <input name="ideb" type="number" min="0" max="10" step="0.01" value={form.ideb} onChange={updateField} placeholder="0,00 – 10,00" />
             </label>
             <label>
-              SAEB
-              <input name="saeb" type="number" min="0" step="0.01" value={form.saeb} onChange={updateField} />
+              IDEB Anos Finais
+              <input name="saeb" type="number" min="0" max="10" step="0.01" value={form.saeb} onChange={updateField} placeholder="0,00 – 10,00" />
             </label>
           </div>
         </section>
