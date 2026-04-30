@@ -2852,32 +2852,68 @@ th {
   margin-bottom: 20px;
 }
 
-.ideb-form-row {
-  display: grid;
-  grid-template-columns: 120px 1fr 1fr;
-  gap: 12px;
+.ideb-input-table {
+  width: 100%;
+  border-collapse: collapse;
   margin-bottom: 12px;
 }
 
-.ideb-form-row label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.82rem;
-  font-weight: 600;
+.ideb-input-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 800;
   color: var(--nexus-muted);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  padding: 0 8px 8px 0;
 }
 
-.ideb-form-row input {
-  padding: 7px 10px;
+.ideb-input-table td {
+  padding: 4px 8px 4px 0;
+}
+
+.ideb-input-table td:last-child {
+  width: 32px;
+}
+
+.ideb-input-table input {
+  background: var(--nexus-light);
   border: 1px solid var(--nexus-border);
   border-radius: var(--radius-btn);
-  font-size: 0.92rem;
-  background: var(--nexus-light);
+  font-size: 0.88rem;
+  padding: 7px 10px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.ideb-input-table input:focus {
+  border-color: var(--nexus-primary);
+  outline: none;
+}
+
+.ideb-form-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ideb-add-row {
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--nexus-accent);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.85rem;
+  font-weight: 600;
+  gap: 5px;
+  padding: 0;
+}
+
+.ideb-add-row:hover {
+  color: var(--nexus-secondary);
 }
 
 .ideb-form-actions {
