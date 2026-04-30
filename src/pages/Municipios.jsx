@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react';
+import { ChevronDown, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLeads } from '../hooks/useLeads.js';
@@ -35,6 +35,11 @@ export default function Municipios() {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
   const [uf, setUf] = useState('');
+  const [expandedId, setExpandedId] = useState(null);
+
+  function toggleCard(id) {
+    setExpandedId((cur) => (cur === id ? null : id));
+  }
 
   const ufOptions = useMemo(() => {
     return [...new Set(leads.map((lead) => lead.uf).filter(Boolean))]
@@ -128,52 +133,45 @@ export default function Municipios() {
         </section>
       ) : (
         <section className="territory-grid">
-          {filteredMunicipios.map((lead) => (
-            <article key={lead.id} className="municipio-card territory-card">
-              <header>
-                <div>
-                  <h2>{lead.municipio}</h2>
-                  <span>{lead.uf}</span>
-                </div>
-                <small className={`status-pill status-${lead.status}`}>{lead.status}</small>
-              </header>
+          {filteredMunicipios.map((lead) => {
+            const expanded = expandedId === lead.id;
+            return (
+              <article key={lead.id} className={`municipio-card territory-card ${expanded ? 'is-expanded' : ''}`}>
+                <button type="button" className="municipio-card-trigger" onClick={() => toggleCard(lead.id)}>
+                  <div>
+                    <h2>{lead.municipio}</h2>
+                    <span>{lead.uf}</span>
+                  </div>
+                  <div className="municipio-card-trigger-right">
+                    <small className={`status-pill status-${lead.status}`}>{lead.status}</small>
+                    <ChevronDown size={16} className="municipio-chevron" />
+                  </div>
+                </button>
 
-              <dl>
-                <div>
-                  <dt>Etapa</dt>
-                  <dd>{lead.etapa || 'Sem etapa'}</dd>
+                <div className="municipio-card-body">
+                  <div className="municipio-card-body-inner">
+                    <dl>
+                      <div><dt>Etapa</dt><dd>{lead.etapa || 'Sem etapa'}</dd></div>
+                      <div><dt>Produto</dt><dd>{PRODUCT_LABEL[lead.produto_interesse] ?? 'A definir'}</dd></div>
+                      <div><dt>Valor estimado</dt><dd>{formatCurrency(lead.valor)}</dd></div>
+                      <div><dt>Contato principal</dt><dd>{lead.responsavel || 'Não informado'}</dd></div>
+                      <div><dt>Alunos estimados</dt><dd>{lead.num_alunos_estimado ? lead.num_alunos_estimado.toLocaleString('pt-BR') : 'A definir'}</dd></div>
+                    </dl>
+                    {lead.proximaAcao && (
+                      <div className="territory-next-action">
+                        <span>Próxima ação</span>
+                        <strong>{lead.proximaAcao}</strong>
+                        {lead.dataAcao && <small>{formatDate(lead.dataAcao)}</small>}
+                      </div>
+                    )}
+                    <Link to={`/leads/${lead.id}`} className="btn btn-ghost">
+                      Ver detalhes
+                    </Link>
+                  </div>
                 </div>
-                <div>
-                  <dt>Produto</dt>
-                  <dd>{PRODUCT_LABEL[lead.produto_interesse] ?? 'A definir'}</dd>
-                </div>
-                <div>
-                  <dt>Valor estimado</dt>
-                  <dd>{formatCurrency(lead.valor)}</dd>
-                </div>
-                <div>
-                  <dt>Contato principal</dt>
-                  <dd>{lead.responsavel || 'Não informado'}</dd>
-                </div>
-                <div>
-                  <dt>Alunos estimados</dt>
-                  <dd>{lead.num_alunos_estimado ? lead.num_alunos_estimado.toLocaleString('pt-BR') : 'A definir'}</dd>
-                </div>
-              </dl>
-
-              {lead.proximaAcao && (
-                <div className="territory-next-action">
-                  <span>Próxima ação</span>
-                  <strong>{lead.proximaAcao}</strong>
-                  {lead.dataAcao && <small>{formatDate(lead.dataAcao)}</small>}
-                </div>
-              )}
-
-              <Link to={`/leads/${lead.id}`} className="btn btn-ghost">
-                Ver detalhes
-              </Link>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </section>
       )}
     </div>
