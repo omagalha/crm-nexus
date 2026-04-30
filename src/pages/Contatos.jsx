@@ -110,50 +110,66 @@ export default function Contatos() {
         </section>
       ) : (
         <section className="contacts-grid">
-          {filteredContacts.map((contato) => (
-            <article key={contato.id} className="contact-card contact-directory-card">
-              <header>
-                <div>
-                  <strong>{contato.nome}</strong>
-                  <span>{CARGO_LABEL[contato.cargo] ?? contato.cargo ?? 'Cargo não informado'}</span>
+          {filteredContacts.map((contato) => {
+            const iniciais = contato.nome
+              .split(' ')
+              .filter(Boolean)
+              .slice(0, 2)
+              .map((p) => p[0].toUpperCase())
+              .join('');
+            return (
+              <article key={contato.id} className="cdir-card">
+                <div className="cdir-top">
+                  <div className="cdir-avatar">{iniciais}</div>
+                  <div className="cdir-info">
+                    <div className="cdir-name-row">
+                      <strong>{contato.nome}</strong>
+                      {contato.ehPrincipal && <span className="cdir-badge">Principal</span>}
+                    </div>
+                    <span className="cdir-cargo">{CARGO_LABEL[contato.cargo] ?? contato.cargo ?? 'Cargo não informado'}</span>
+                    <Link className="cdir-municipio" to={`/leads/${contato.leadId}`}>
+                      {contato.municipio} / {contato.uf}
+                    </Link>
+                  </div>
                 </div>
-                {contato.ehPrincipal && <small>Principal</small>}
-              </header>
 
-              <Link className="contact-lead-link" to={`/leads/${contato.leadId}`}>
-                {contato.municipio} / {contato.uf}
-              </Link>
-
-              <div className="contact-methods">
-                {contato.email && (
-                  <a href={`mailto:${contato.email}`}>
-                    <Mail size={16} /> {contato.email}
-                  </a>
+                {(contato.telefone || contato.email || contato.whatsapp) && (
+                  <div className="cdir-actions">
+                    {contato.telefone && (
+                      <a className="cdir-btn" href={`tel:${contato.telefone.replace(/\D/g, '')}`} title={contato.telefone}>
+                        <Phone size={15} />
+                      </a>
+                    )}
+                    {contato.email && (
+                      <a className="cdir-btn" href={`mailto:${contato.email}`} title={contato.email}>
+                        <Mail size={15} />
+                      </a>
+                    )}
+                    {contato.whatsapp && (
+                      <a className="cdir-btn cdir-btn-wpp" href={whatsappUrl(contato.whatsapp)} target="_blank" rel="noreferrer" title="WhatsApp">
+                        <MessageCircle size={15} />
+                      </a>
+                    )}
+                    <Link className="cdir-ver" to={`/leads/${contato.leadId}`}>
+                      Ver lead →
+                    </Link>
+                  </div>
                 )}
-                {contato.telefone && (
-                  <a href={`tel:${contato.telefone.replace(/\D/g, '')}`}>
-                    <Phone size={16} /> {contato.telefone}
-                  </a>
-                )}
-                {contato.whatsapp && (
-                  <a href={whatsappUrl(contato.whatsapp)} target="_blank" rel="noreferrer">
-                    <MessageCircle size={16} /> WhatsApp
-                  </a>
-                )}
-              </div>
 
-              {contato.leadEtapa && (
-                <div className="contact-context">
-                  <span>Etapa do lead</span>
-                  <strong>{contato.leadEtapa}</strong>
-                </div>
-              )}
+                {!contato.telefone && !contato.email && !contato.whatsapp && (
+                  <div className="cdir-actions">
+                    <Link className="cdir-ver" to={`/leads/${contato.leadId}`}>
+                      Ver lead →
+                    </Link>
+                  </div>
+                )}
 
-              <Link to={`/leads/${contato.leadId}`} className="btn btn-ghost">
-                Ver lead
-              </Link>
-            </article>
-          ))}
+                {contato.leadEtapa && (
+                  <div className="cdir-etapa">{contato.leadEtapa}</div>
+                )}
+              </article>
+            );
+          })}
         </section>
       )}
     </div>

@@ -2477,6 +2477,130 @@ th {
   }
 }
 
+/* Cards de contato — página Contatos */
+.cdir-card {
+  background: var(--nexus-light);
+  border: 1px solid var(--nexus-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  transition: box-shadow 0.15s;
+}
+
+.cdir-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.cdir-top {
+  align-items: flex-start;
+  display: flex;
+  gap: 14px;
+}
+
+.cdir-avatar {
+  align-items: center;
+  background: var(--nexus-primary);
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.cdir-info {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.cdir-name-row {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cdir-name-row strong {
+  font-size: 0.97rem;
+}
+
+.cdir-badge {
+  background: rgba(30, 42, 120, 0.08);
+  border-radius: 999px;
+  color: var(--nexus-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+}
+
+.cdir-cargo {
+  color: var(--nexus-muted);
+  font-size: 0.82rem;
+}
+
+.cdir-municipio {
+  color: var(--nexus-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cdir-municipio:hover { text-decoration: underline; }
+
+.cdir-actions {
+  align-items: center;
+  border-top: 1px solid var(--nexus-border);
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.cdir-btn {
+  align-items: center;
+  background: #f3f6f3;
+  border: 1px solid var(--nexus-border);
+  border-radius: var(--radius);
+  color: var(--nexus-dark);
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.12s;
+  width: 34px;
+}
+
+.cdir-btn:hover { background: var(--nexus-border); }
+
+.cdir-btn-wpp { color: #25d366; }
+.cdir-btn-wpp:hover { background: #dcfce7; border-color: #86efac; }
+
+.cdir-ver {
+  color: var(--nexus-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-left: auto;
+  text-decoration: none;
+}
+
+.cdir-ver:hover { text-decoration: underline; }
+
+.cdir-etapa {
+  background: #f3f6f3;
+  border-radius: 6px;
+  color: var(--nexus-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
 /* Google Calendar integration panel */
 .integracao-body {
   display: grid;
