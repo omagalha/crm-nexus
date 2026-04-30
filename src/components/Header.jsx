@@ -8,7 +8,7 @@ function initials(nome) {
 }
 
 const PERFIL_LABEL = {
-  admin:          'Administrador',
+  administrador:  'Administrador',
   diretor:        'Diretor',
   comercial:      'Comercial',
   administrativo: 'Administrativo',

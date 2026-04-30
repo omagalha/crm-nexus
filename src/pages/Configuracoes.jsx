@@ -13,7 +13,7 @@ import { convidarMembro, getEquipe, toggleMembroAtivo, updateMembroRole } from '
 import { supabase } from '../services/supabase.js';
 
 const PERFIL_LABEL = {
-  admin:          'Administrador',
+  administrador:  'Administrador',
   diretor:        'Diretor',
   comercial:      'Comercial',
   administrativo: 'Administrativo',
@@ -22,7 +22,7 @@ const PERFIL_LABEL = {
 
 const ROLES = [
   { value: 'diretor',        label: 'Diretor',        desc: 'Acesso total ao sistema. Único que pode convidar membros.' },
-  { value: 'admin',          label: 'Administrador',  desc: 'Acesso total ao sistema.' },
+  { value: 'administrador',  label: 'Administrador',  desc: 'Acesso total ao sistema.' },
   { value: 'comercial',      label: 'Comercial',      desc: 'Cadastra leads, registra interações e acompanha oportunidades.' },
   { value: 'administrativo', label: 'Administrativo', desc: 'Acompanha propostas, documentos, contratos e notas.' },
   { value: 'consulta',       label: 'Consulta',       desc: 'Apenas visualiza informações.' },
@@ -32,7 +32,7 @@ export default function Configuracoes() {
   const { perfil, session, updatePerfil } = useAuth();
   const showToast = useToast();
   const isDiretor = perfil?.perfil === 'diretor';
-  const isAdmin   = isDiretor || perfil?.perfil === 'admin';
+  const isAdmin   = isDiretor || perfil?.perfil === 'administrador';
 
   // perfil
   const [nome, setNome] = useState(perfil?.nome ?? '');
