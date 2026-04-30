@@ -2367,6 +2367,64 @@ th {
   }
 }
 
+/* Toast */
+.toast-stack {
+  bottom: 24px;
+  display: grid;
+  gap: 10px;
+  position: fixed;
+  right: 24px;
+  z-index: 9999;
+}
+
+.toast {
+  align-items: center;
+  animation: toast-in 0.2s ease;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  display: flex;
+  font-size: 0.88rem;
+  font-weight: 500;
+  gap: 10px;
+  max-width: 340px;
+  padding: 13px 18px;
+}
+
+.toast-success {
+  background: #162b16;
+  border: 1px solid var(--nexus-primary);
+  color: #c6f4c6;
+}
+
+.toast-error {
+  background: #2d1111;
+  border: 1px solid #dc2626;
+  color: #fecaca;
+}
+
+.toast-info {
+  background: #111d2d;
+  border: 1px solid #2b7be0;
+  color: #bfdbfe;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 560px) {
+  .toast-stack {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+  }
+  .toast {
+    max-width: 100%;
+  }
+}
+
 /* Google Calendar integration panel */
 .integracao-body {
   display: grid;

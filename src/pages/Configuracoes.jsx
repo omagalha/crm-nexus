@@ -2,6 +2,7 @@ import { Calendar, KeyRound, Mail, Save, Shield, User, UserCheck, UserX } from '
 import { useEffect, useState } from 'react';
 import Button from '../components/Button.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useToast } from '../context/ToastContext.jsx';
 import {
   connectCalendar,
   disconnectCalendar,
@@ -29,19 +30,18 @@ const ROLES = [
 
 export default function Configuracoes() {
   const { perfil, session, updatePerfil } = useAuth();
+  const showToast = useToast();
   const isDiretor = perfil?.perfil === 'diretor';
   const isAdmin   = isDiretor || perfil?.perfil === 'admin';
 
   // perfil
   const [nome, setNome] = useState(perfil?.nome ?? '');
   const [savingNome, setSavingNome] = useState(false);
-  const [nomeMsg, setNomeMsg] = useState('');
 
   // senha
   const [senhaNova, setSenhaNova] = useState('');
   const [senhaConfirm, setSenhaConfirm] = useState('');
   const [savingSenha, setSavingSenha] = useState(false);
-  const [senhaMsg, setSenhaMsg] = useState('');
   const [senhaError, setSenhaError] = useState('');
 
   // equipe (admin only)
@@ -51,18 +51,19 @@ export default function Configuracoes() {
 
   // Google Calendar
   const [calConnected, setCalConnected] = useState(isCalendarConnected);
-  const [calError, setCalError]         = useState('');
 
   useEffect(() => {
-    onCalendarConnectionChange(setCalConnected);
+    onCalendarConnectionChange((connected) => {
+      setCalConnected(connected);
+      if (connected) showToast('Google Calendar conectado!');
+    });
   }, []);
 
   function handleConnectCalendar() {
-    setCalError('');
     try {
       connectCalendar();
     } catch (err) {
-      setCalError(err.message);
+      showToast(err.message, 'error');
     }
   }
 
@@ -73,8 +74,6 @@ export default function Configuracoes() {
   // convite
   const [emailConvite, setEmailConvite] = useState('');
   const [sendingConvite, setSendingConvite] = useState(false);
-  const [conviteMsg, setConviteMsg] = useState('');
-  const [conviteError, setConviteError] = useState('');
 
   useEffect(() => {
     if (!isAdmin) return;
@@ -105,16 +104,14 @@ export default function Configuracoes() {
 
   async function handleConvite(e) {
     e.preventDefault();
-    setConviteError('');
-    setConviteMsg('');
     if (!emailConvite.trim()) return;
     setSendingConvite(true);
     try {
       await convidarMembro(emailConvite.trim());
-      setConviteMsg(`Convite enviado para ${emailConvite.trim()}. Após o primeiro acesso, defina o papel da pessoa na lista da equipe.`);
+      showToast(`Convite enviado para ${emailConvite.trim()}.`);
       setEmailConvite('');
     } catch (err) {
-      setConviteError(err.message || 'Não foi possível enviar o convite.');
+      showToast(err.message || 'Não foi possível enviar o convite.', 'error');
     } finally {
       setSendingConvite(false);
     }
@@ -124,12 +121,11 @@ export default function Configuracoes() {
     e.preventDefault();
     if (!nome.trim()) return;
     setSavingNome(true);
-    setNomeMsg('');
     try {
       await updatePerfil({ nome: nome.trim() });
-      setNomeMsg('Nome atualizado com sucesso.');
+      showToast('Nome atualizado com sucesso.');
     } catch (err) {
-      setNomeMsg(err.message || 'Não foi possível salvar.');
+      showToast(err.message || 'Não foi possível salvar.', 'error');
     } finally {
       setSavingNome(false);
     }
@@ -138,7 +134,6 @@ export default function Configuracoes() {
   async function handleSaveSenha(e) {
     e.preventDefault();
     setSenhaError('');
-    setSenhaMsg('');
     if (senhaNova.length < 6) {
       setSenhaError('A nova senha deve ter ao menos 6 caracteres.');
       return;
@@ -151,7 +146,7 @@ export default function Configuracoes() {
     try {
       const { error } = await supabase.auth.updateUser({ password: senhaNova });
       if (error) throw error;
-      setSenhaMsg('Senha alterada com sucesso.');
+      showToast('Senha alterada com sucesso.');
       setSenhaNova('');
       setSenhaConfirm('');
     } catch (err) {
@@ -190,11 +185,6 @@ export default function Configuracoes() {
               Nível de acesso
               <input value={PERFIL_LABEL[perfil?.perfil] ?? perfil?.perfil ?? '—'} disabled />
             </label>
-            {nomeMsg && (
-              <div className={`config-msg ${nomeMsg.includes('sucesso') ? 'config-msg-ok' : 'config-msg-err'}`}>
-                {nomeMsg}
-              </div>
-            )}
             <div className="form-actions">
               <Button type="submit" disabled={savingNome}>
                 <Save size={16} />
@@ -249,8 +239,6 @@ export default function Configuracoes() {
             <p className="convite-hint">
               O Supabase enviará um link de acesso para o e-mail informado. Após o primeiro login, defina o papel da pessoa na lista da equipe abaixo.
             </p>
-            {conviteError && <div className="config-msg config-msg-err">{conviteError}</div>}
-            {conviteMsg   && <div className="config-msg config-msg-ok">{conviteMsg}</div>}
             <div className="form-actions">
               <Button type="submit" disabled={sendingConvite}>
                 <Mail size={16} />
@@ -274,7 +262,6 @@ export default function Configuracoes() {
             <span className={`integracao-dot ${calConnected ? 'is-connected' : ''}`} />
             <span>{calConnected ? 'Conectado — próximas ações serão sincronizadas automaticamente.' : 'Desconectado — conecte para sincronizar próximas ações com sua agenda.'}</span>
           </div>
-          {calError && <div className="config-msg config-msg-err">{calError}</div>}
           <div className="form-actions">
             {calConnected ? (
               <Button type="button" onClick={handleDisconnectCalendar} className="btn btn-secondary">

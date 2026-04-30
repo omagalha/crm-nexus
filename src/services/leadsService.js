@@ -208,10 +208,19 @@ export async function updateLead(leadId, payload) {
   return mapLead({ ...lead, contatos: [] });
 }
 
+const ETAPA_STATUS_AUTO = {
+  'Contrato fechado': 'ganho',
+  'Perdido / pausado': 'perdido',
+};
+
 export async function moveLeadToEtapa(leadId, etapa) {
+  const update = { etapa };
+  const autoStatus = ETAPA_STATUS_AUTO[etapa];
+  if (autoStatus) update.status = autoStatus;
+
   const { error } = await supabase
     .from('leads')
-    .update({ etapa })
+    .update(update)
     .eq('id', leadId);
   if (error) throw error;
 }

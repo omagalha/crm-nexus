@@ -18,6 +18,8 @@ import {
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Button from '../components/Button.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
+import { useToast } from '../context/ToastContext.jsx';
 import { useLead } from '../hooks/useLead.js';
 import { isCalendarConnected, syncLeadCalendar } from '../services/googleCalendarService.js';
 import { addContato, createInteraction, deleteContato, setLeadGcalEventId, updateContato } from '../services/leadsService.js';
@@ -70,16 +72,19 @@ function formatDate(value) {
   return new Date(value).toLocaleDateString('pt-BR');
 }
 
-function whatsappUrl(value) {
-  const digits = value?.replace(/\D/g, '');
+function whatsappUrl(number, message) {
+  const digits = number?.replace(/\D/g, '');
   if (!digits) return '';
-  const number = digits.startsWith('55') ? digits : `55${digits}`;
-  return `https://wa.me/${number}`;
+  const phone = digits.startsWith('55') ? digits : `55${digits}`;
+  if (!message) return `https://wa.me/${phone}`;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
 export default function LeadDetails() {
   const { leadId } = useParams();
   const { lead, loading, error, reload } = useLead(leadId);
+  const { perfil } = useAuth();
+  const showToast = useToast();
 
   // interações
   const [interactionForm, setInteractionForm] = useState(initialInteraction);
@@ -131,6 +136,7 @@ export default function LeadDetails() {
       }
       setContatoFormOpen(false);
       await reload();
+      showToast(contatoEditId ? 'Contato atualizado.' : 'Contato adicionado.');
     } catch (err) {
       setContatoError(err.message || 'Não foi possível salvar o contato.');
     } finally {
@@ -187,6 +193,7 @@ export default function LeadDetails() {
       setInteractionForm(initialInteraction);
       setFormOpen(false);
       await reload();
+      showToast('Interação registrada com sucesso!');
     } catch (err) {
       setFormError(err.message || 'Não foi possível registrar a interação.');
     } finally {
@@ -317,7 +324,15 @@ export default function LeadDetails() {
                   {c.email    && <p><Mail size={14} /> {c.email}</p>}
                   {c.telefone && <p><Phone size={14} /> {c.telefone}</p>}
                   {c.whatsapp && (
-                    <a className="whatsapp-link" href={whatsappUrl(c.whatsapp)} target="_blank" rel="noreferrer">
+                    <a
+                      className="whatsapp-link"
+                      href={whatsappUrl(
+                        c.whatsapp,
+                        `Olá ${c.nome.split(' ')[0]}! Aqui é o ${perfil?.nome ?? 'Nexus Educação'}. Gostaria de dar continuidade à nossa conversa${lead.produto_interesse ? ` sobre ${PRODUTO_LABEL[lead.produto_interesse]}` : ''} para ${lead.municipio}/${lead.uf}. Tudo bem?`,
+                      )}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <MessageCircle size={14} /> Abrir WhatsApp
                     </a>
                   )}
