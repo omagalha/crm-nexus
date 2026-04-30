@@ -1,0 +1,10 @@
+{{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Thales Magalhães/OneDrive/Desktop/Historia do Direito/claude-cookbooks-main/claude-cookbooks-main/**)",
+      "WebFetch(domain:nexuseduca.com.br)",
+      "Bash(npm install *)",
+      "Read(//c/Users/Thales Magalhães/OneDrive/Desktop/pack fotos carros/**)"
+    ]
+  }
+}

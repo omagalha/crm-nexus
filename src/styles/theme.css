@@ -1,0 +1,16 @@
+:root {
+  --nexus-primary: #3ddc68;
+  --nexus-secondary: #2bb54e;
+  --nexus-accent: #1a9940;
+  --nexus-bg: #f3f6f3;
+  --nexus-dark: #1a2b1c;
+  --nexus-light: #ffffff;
+  --nexus-success: #22c55e;
+  --nexus-warning: #f59e0b;
+  --nexus-danger: #dc2626;
+  --nexus-border: #dde8dd;
+  --nexus-muted: #557060;
+  --nexus-sidebar: #1e2d1f;
+  --shadow-soft: 0 14px 40px rgba(26, 43, 28, 0.08);
+  --radius: 8px;
+}
