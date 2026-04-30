@@ -53,11 +53,11 @@ export default function Configuracoes() {
   const [calConnected, setCalConnected] = useState(isCalendarConnected);
 
   useEffect(() => {
-    onCalendarConnectionChange((connected) => {
+    return onCalendarConnectionChange((connected) => {
       setCalConnected(connected);
       if (connected) showToast('Google Calendar conectado!');
     });
-  }, []);
+  }, [showToast]);
 
   function handleConnectCalendar() {
     try {

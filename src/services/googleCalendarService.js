@@ -4,7 +4,7 @@ const TOKEN_KEY = 'nexus_gcal_token';
 const TOKEN_EXP_KEY = 'nexus_gcal_token_exp';
 
 let _tokenClient = null;
-let _onConnectChange = null;
+const _connectListeners = new Set();
 
 // ── Token storage (sessionStorage — expira ao fechar a aba) ──
 
@@ -36,7 +36,12 @@ export function isCalendarConnected() {
 
 /** Registra callback chamado quando estado de conexão muda. */
 export function onCalendarConnectionChange(cb) {
-  _onConnectChange = cb;
+  _connectListeners.add(cb);
+  return () => _connectListeners.delete(cb);
+}
+
+function notifyConnectionChange(connected) {
+  for (const cb of _connectListeners) cb(connected);
 }
 
 /** Abre o popup de autorização Google. */
@@ -57,7 +62,7 @@ export function connectCalendar() {
           return;
         }
         saveToken(response.access_token, response.expires_in ?? 3600);
-        _onConnectChange?.(true);
+        notifyConnectionChange(true);
       },
     });
   }
@@ -73,7 +78,7 @@ export function disconnectCalendar() {
   }
   clearToken();
   _tokenClient = null;
-  _onConnectChange?.(false);
+  notifyConnectionChange(false);
 }
 
 // ── Chamadas à API Calendar ──
@@ -93,13 +98,23 @@ async function apiRequest(method, path, body) {
 
   if (res.status === 401) {
     clearToken();
-    _onConnectChange?.(false);
+    notifyConnectionChange(false);
     throw new Error('Sessão Google expirou. Reconecte o Google Calendar em Configurações.');
   }
 
   if (res.status === 204) return null;
   if (!res.ok) throw new Error(`Google Calendar API: ${res.status}`);
   return res.json();
+}
+
+function buildMonthRange({ mes, ano }) {
+  const start = new Date(Number(ano), Number(mes), 1);
+  const end = new Date(Number(ano), Number(mes) + 1, 1);
+
+  return {
+    timeMin: start.toISOString(),
+    timeMax: end.toISOString(),
+  };
 }
 
 function buildEvent(lead) {
@@ -124,6 +139,20 @@ export async function createCalendarEvent(lead) {
   if (!loadToken() || !lead.dataAcao || !lead.proximaAcao) return null;
   const event = await apiRequest('POST', '/calendars/primary/events', buildEvent(lead));
   return event?.id ?? null;
+}
+
+export async function listCalendarEvents({ mes, ano }) {
+  if (!loadToken()) return [];
+
+  const params = new URLSearchParams({
+    ...buildMonthRange({ mes, ano }),
+    singleEvents: 'true',
+    orderBy: 'startTime',
+    maxResults: '250',
+  });
+
+  const data = await apiRequest('GET', `/calendars/primary/events?${params.toString()}`);
+  return data?.items ?? [];
 }
 
 export async function updateCalendarEvent(eventId, lead) {

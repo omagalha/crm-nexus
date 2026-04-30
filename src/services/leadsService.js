@@ -25,6 +25,7 @@ function mapLead(raw) {
     probabilidade: raw.probabilidade ?? 0,
     proximaAcao: raw.proxima_acao ?? '',
     dataAcao: raw.data_proxima_acao ?? '',
+    concluidaEm: raw.proxima_acao_concluida_em ?? null,
     responsavel: principal?.nome ?? '—',
     cargo: principal?.cargo ?? '',
     email: principal?.email ?? '',
@@ -261,6 +262,22 @@ export async function deleteContato(contatoId) {
 
 export async function deleteLead(leadId) {
   const { error } = await supabase.from('leads').delete().eq('id', leadId);
+  if (error) throw error;
+}
+
+export async function concluirProximaAcao(leadId) {
+  const { error } = await supabase
+    .from('leads')
+    .update({ proxima_acao_concluida_em: new Date().toISOString() })
+    .eq('id', leadId);
+  if (error) throw error;
+}
+
+export async function reabrirProximaAcao(leadId) {
+  const { error } = await supabase
+    .from('leads')
+    .update({ proxima_acao_concluida_em: null })
+    .eq('id', leadId);
   if (error) throw error;
 }
 
