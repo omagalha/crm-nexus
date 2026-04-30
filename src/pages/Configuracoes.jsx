@@ -21,8 +21,8 @@ const PERFIL_LABEL = {
 };
 
 const ROLES = [
-  { value: 'diretor',        label: 'Diretor',        desc: 'Acesso total ao sistema. Único que pode convidar membros.' },
-  { value: 'administrador',  label: 'Administrador',  desc: 'Acesso total ao sistema.' },
+  { value: 'diretor',        label: 'Diretor',        desc: 'Acesso total ao sistema, incluindo convite de membros.' },
+  { value: 'administrador',  label: 'Administrador',  desc: 'Acesso total ao sistema, incluindo convite de membros.' },
   { value: 'comercial',      label: 'Comercial',      desc: 'Cadastra leads, registra interações e acompanha oportunidades.' },
   { value: 'administrativo', label: 'Administrativo', desc: 'Acompanha propostas, documentos, contratos e notas.' },
   { value: 'consulta',       label: 'Consulta',       desc: 'Apenas visualiza informações.' },
@@ -219,8 +219,8 @@ export default function Configuracoes() {
         </article>
       </div>
 
-      {/* Convite — exclusivo do Diretor */}
-      {isDiretor && (
+      {/* Convite — Diretor e Administrador */}
+      {isAdmin && (
         <article className="panel">
           <div className="panel-header">
             <div><span>Administração</span><h2><Mail size={15} style={{ marginRight: 6, verticalAlign: 'middle' }} />Convidar membro</h2></div>
