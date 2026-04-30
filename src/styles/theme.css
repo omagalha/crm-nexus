@@ -1,16 +1,38 @@
 :root {
+  /* Brand — Nexus green, unchanged */
   --nexus-primary: #3ddc68;
   --nexus-secondary: #2bb54e;
   --nexus-accent: #1a9940;
-  --nexus-bg: #f3f6f3;
-  --nexus-dark: #1a2b1c;
+
+  /* Notion warm-neutral palette */
+  --nexus-bg: #f6f5f4;
+  --nexus-dark: #31302e;
   --nexus-light: #ffffff;
+  --nexus-muted: #615d59;
+
+  /* Semantic */
   --nexus-success: #22c55e;
   --nexus-warning: #f59e0b;
   --nexus-danger: #dc2626;
-  --nexus-border: #dde8dd;
-  --nexus-muted: #557060;
+
+  /* Notion whisper border */
+  --nexus-border: rgba(0, 0, 0, 0.09);
+
   --nexus-sidebar: #1e2d1f;
-  --shadow-soft: 0 14px 40px rgba(26, 43, 28, 0.08);
-  --radius: 8px;
+
+  /* Notion multi-layer card shadow */
+  --shadow-soft:
+    rgba(0, 0, 0, 0.04) 0px 4px 18px,
+    rgba(0, 0, 0, 0.027) 0px 2px 8px,
+    rgba(0, 0, 0, 0.02) 0px 0.8px 3px,
+    rgba(0, 0, 0, 0.01) 0px 0.175px 1px;
+
+  --shadow-deep:
+    rgba(0, 0, 0, 0.1) 0px 8px 32px,
+    rgba(0, 0, 0, 0.06) 0px 4px 12px;
+
+  /* Radius scale */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-btn: 6px;
 }

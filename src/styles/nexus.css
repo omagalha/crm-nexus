@@ -100,9 +100,9 @@
 
 .search-box {
   align-items: center;
-  background: #f5f9f5;
+  background: #f9f9f8;
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   color: var(--nexus-muted);
   display: flex;
   flex: 1;
@@ -130,7 +130,7 @@
   align-items: center;
   background: var(--nexus-light);
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   color: var(--nexus-primary);
   display: inline-flex;
   height: 42px;
@@ -315,8 +315,8 @@
 }
 
 .pipeline-column {
-  background: #edf5ee;
-  border: 1px solid #d0e8d2;
+  background: #f2f1ef;
+  border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: var(--radius);
   min-height: 420px;
   min-width: 180px;
@@ -460,7 +460,7 @@
 }
 
 .municipio-card-trigger:hover {
-  background: #f7fbf7;
+  background: #f9f9f8;
   border-radius: var(--radius);
 }
 
@@ -595,7 +595,7 @@ th {
 .btn {
   align-items: center;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   display: inline-flex;
   font-weight: 800;
   justify-content: center;
@@ -653,7 +653,7 @@ th {
 
 .login-panel input {
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   min-height: 44px;
   padding: 0 12px;
 }
@@ -680,7 +680,7 @@ th {
 
 .skel {
   animation: shimmer 1.4s ease infinite;
-  background: linear-gradient(90deg, #e8ede8 25%, #d8e4d8 50%, #e8ede8 75%);
+  background: linear-gradient(90deg, #eae9e7 25%, #dbd9d7 50%, #eae9e7 75%);
   background-size: 600px 100%;
   border-radius: 6px;
 }
@@ -1268,9 +1268,9 @@ th {
 .form-grid input,
 .form-grid select,
 .form-grid textarea {
-  background: #fafcfa;
+  background: #fafaf9;
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   color: var(--nexus-dark);
   min-height: 44px;
   outline: 0;
@@ -1428,7 +1428,7 @@ th {
   align-items: center;
   background: rgba(61, 220, 104, 0.1);
   border: 1px solid rgba(61, 220, 104, 0.22);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   color: var(--nexus-dark);
   display: inline-flex;
   font-weight: 800;
@@ -1443,7 +1443,7 @@ th {
 }
 
 .interaction-form {
-  background: #f7fbf7;
+  background: #f9f9f8;
   border: 1px solid var(--nexus-border);
   border-radius: var(--radius);
   display: grid;
@@ -1551,9 +1551,9 @@ th {
 
 .filter-search {
   align-items: center;
-  background: #f7fbf7;
+  background: #f9f9f8;
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   color: var(--nexus-muted);
   display: flex;
   flex: 1;
@@ -1572,9 +1572,9 @@ th {
 }
 
 .filter-bar select {
-  background: #f7fbf7;
+  background: #f9f9f8;
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   color: var(--nexus-dark);
   height: 42px;
   outline: 0;
@@ -1609,7 +1609,7 @@ th {
 }
 
 .data-table tbody tr:hover {
-  background: #f7fbf7;
+  background: #f9f9f8;
 }
 
 .table-sub {
@@ -1696,7 +1696,7 @@ th {
 }
 
 .tarefa-item:hover {
-  background: #f7fbf7;
+  background: #f9f9f8;
 }
 
 .tarefa-info {
@@ -1738,7 +1738,7 @@ th {
 .tarefa-prazo-futura   { background: rgba(85,112,96,0.1);   color: #557060; }
 
 .skel-row {
-  background: linear-gradient(90deg, #e8f0e8 25%, #f3f9f3 50%, #e8f0e8 75%);
+  background: linear-gradient(90deg, #eae9e7 25%, #f2f1ef 50%, #eae9e7 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
   border-radius: 6px;
@@ -1863,7 +1863,7 @@ th {
 }
 
 .config-form input:disabled {
-  background: #f3f6f3;
+  background: #f5f4f2;
   color: var(--nexus-muted);
   cursor: not-allowed;
 }
@@ -1954,9 +1954,9 @@ th {
 }
 
 .equipe-role-select {
-  background: #f7fbf7;
+  background: #f9f9f8;
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   color: var(--nexus-dark);
   font-size: 0.82rem;
   height: 34px;
@@ -1965,7 +1965,7 @@ th {
 }
 
 .equipe-role-select:disabled {
-  background: #f3f6f3;
+  background: #f5f4f2;
   color: var(--nexus-muted);
   cursor: not-allowed;
 }
@@ -2018,11 +2018,11 @@ th {
   width: 28px;
 }
 
-.icon-btn:hover { background: #f3f6f3; color: var(--nexus-dark); }
+.icon-btn:hover { background: #f5f4f2; color: var(--nexus-dark); }
 .icon-btn-danger:hover { background: rgba(220,38,38,0.08); border-color: #fca5a5; color: #b91c1c; }
 
 .contato-form {
-  background: #f7fbf7;
+  background: #f9f9f8;
   border: 1px solid var(--nexus-border);
   border-radius: var(--radius);
   display: grid;
@@ -2052,9 +2052,9 @@ th {
 
 .territory-search {
   align-items: center;
-  background: #f7fbf7;
+  background: #f9f9f8;
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   color: var(--nexus-muted);
   display: flex;
   gap: 10px;
@@ -2073,9 +2073,9 @@ th {
 }
 
 .territory-toolbar select {
-  background: #f7fbf7;
+  background: #f9f9f8;
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   min-height: 42px;
   padding: 0 12px;
 }
@@ -2228,7 +2228,7 @@ th {
 }
 
 .contact-context {
-  background: #f7fbf7;
+  background: #f9f9f8;
   border: 1px solid var(--nexus-border);
   border-radius: var(--radius);
   display: grid;
@@ -2563,9 +2563,9 @@ th {
 
 .cdir-btn {
   align-items: center;
-  background: #f3f6f3;
+  background: #f5f4f2;
   border: 1px solid var(--nexus-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   color: var(--nexus-dark);
   display: inline-flex;
   height: 34px;
@@ -2591,7 +2591,7 @@ th {
 .cdir-ver:hover { text-decoration: underline; }
 
 .cdir-etapa {
-  background: #f3f6f3;
+  background: #f5f4f2;
   border-radius: 6px;
   color: var(--nexus-muted);
   font-size: 0.75rem;
