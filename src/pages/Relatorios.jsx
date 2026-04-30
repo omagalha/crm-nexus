@@ -1,3 +1,4 @@
+import { Download } from 'lucide-react';
 import { useLeads } from '../hooks/useLeads.js';
 
 const PRODUTO_LABEL = {
@@ -52,6 +53,43 @@ function BarChart({ items, total }) {
   );
 }
 
+function exportCSV(leads) {
+  const headers = [
+    'Município', 'UF', 'Status', 'Etapa', 'Produto',
+    'Valor estimado (R$)', 'Probabilidade (%)', 'Próxima ação', 'Data da ação', 'Criado em',
+  ];
+
+  const rows = leads.map((l) => [
+    l.municipio,
+    l.uf,
+    l.status,
+    l.etapa,
+    PRODUTO_LABEL[l.produto_interesse] ?? l.produto_interesse ?? '',
+    l.valor ?? 0,
+    l.probabilidade ?? '',
+    l.proximaAcao ?? '',
+    l.dataAcao ? new Date(l.dataAcao).toLocaleDateString('pt-BR') : '',
+    l.created_at ? new Date(l.created_at).toLocaleDateString('pt-BR') : '',
+  ]);
+
+  const escape = (v) => {
+    const s = String(v ?? '');
+    return s.includes(',') || s.includes('"') || s.includes('\n')
+      ? `"${s.replace(/"/g, '""')}"`
+      : s;
+  };
+
+  const csv = [headers, ...rows].map((row) => row.map(escape).join(',')).join('\n');
+  const bom = '﻿'; // BOM para Excel reconhecer UTF-8
+  const blob = new Blob([bom + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `nexus-crm-leads-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export default function Relatorios() {
   const { leads, loading } = useLeads();
 
@@ -104,6 +142,16 @@ export default function Relatorios() {
           <h1>Relatórios</h1>
           <p>Visão consolidada do pipeline, conversão e distribuição por produto.</p>
         </div>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          onClick={() => exportCSV(leads)}
+          disabled={leads.length === 0}
+          title="Exportar todos os leads em CSV"
+        >
+          <Download size={16} />
+          Exportar CSV
+        </button>
       </section>
 
       {/* Métricas gerais */}
