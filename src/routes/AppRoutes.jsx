@@ -12,6 +12,8 @@ import Tarefas from '../pages/Tarefas.jsx';
 import Relatorios from '../pages/Relatorios.jsx';
 import Configuracoes from '../pages/Configuracoes.jsx';
 import Login from '../pages/Login.jsx';
+import EsqueciSenha from '../pages/EsqueciSenha.jsx';
+import RedefinirSenha from '../pages/RedefinirSenha.jsx';
 
 function LoadingScreen() {
   return (
@@ -42,6 +44,8 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<PublicRoute />} />
+      <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+      <Route path="/redefinir-senha" element={<RedefinirSenha />} />
       <Route element={<ProtectedRoute />}>
         <Route index element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />

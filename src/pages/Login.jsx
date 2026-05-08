@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import NexusSymbol from '../components/NexusSymbol.jsx';
 import { login } from '../services/authService.js';
 
@@ -52,6 +53,13 @@ export default function Login() {
           <button className="btn btn-primary" type="submit" disabled={carregando}>
             {carregando ? 'Entrando…' : 'Entrar'}
           </button>
+
+          <Link
+            to="/esqueci-senha"
+            style={{ color: 'var(--nexus-muted)', fontSize: '0.875rem', textAlign: 'center', textDecoration: 'none' }}
+          >
+            Esqueci minha senha
+          </Link>
         </form>
       </section>
     </main>
