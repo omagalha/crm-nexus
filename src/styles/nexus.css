@@ -1321,6 +1321,40 @@ th {
   grid-column: 1 / -1;
 }
 
+.form-field-action {
+  align-items: end;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.form-field-action span {
+  color: var(--nexus-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding-bottom: 10px;
+}
+
+.quick-contact-box {
+  background: #fff;
+  border: 1px solid var(--nexus-border);
+  border-radius: var(--radius);
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+}
+
+.quick-contact-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.quick-contact-header strong {
+  color: var(--nexus-dark);
+  font-size: 0.95rem;
+}
+
 .input-short {
   text-transform: uppercase;
 }

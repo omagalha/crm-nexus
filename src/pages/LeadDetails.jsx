@@ -115,10 +115,19 @@ export default function LeadDetails() {
   const [contatoFormOpen, setContatoFormOpen] = useState(false);
   const [savingContato, setSavingContato] = useState(false);
   const [contatoError, setContatoError] = useState('');
+  const [quickContatoOpen, setQuickContatoOpen] = useState(false);
+  const [quickContatoForm, setQuickContatoForm] = useState(initialContato);
+  const [savingQuickContato, setSavingQuickContato] = useState(false);
+  const [quickContatoError, setQuickContatoError] = useState('');
 
   const sortedInteractions = useMemo(
     () => [...(lead?.interacoes ?? [])].sort((a, b) => new Date(b.data) - new Date(a.data)),
     [lead?.interacoes],
+  );
+
+  const contatosById = useMemo(
+    () => Object.fromEntries((lead?.contatos ?? []).map((contato) => [contato.id, contato])),
+    [lead?.contatos],
   );
 
   function openNewContato() {
@@ -138,6 +147,40 @@ export default function LeadDetails() {
   function updateContatoField(e) {
     const { name, value, type, checked } = e.target;
     setContatoForm((cur) => ({ ...cur, [name]: type === 'checkbox' ? checked : value }));
+  }
+
+  function openQuickContato() {
+    setQuickContatoForm(initialContato);
+    setQuickContatoError('');
+    setQuickContatoOpen(true);
+  }
+
+  function updateQuickContatoField(e) {
+    const { name, value, type, checked } = e.target;
+    setQuickContatoForm((cur) => ({ ...cur, [name]: type === 'checkbox' ? checked : value }));
+  }
+
+  async function handleQuickContatoSubmit(e) {
+    e.preventDefault();
+    setQuickContatoError('');
+    if (!quickContatoForm.nome.trim()) {
+      setQuickContatoError('Informe o nome do contato.');
+      return;
+    }
+
+    try {
+      setSavingQuickContato(true);
+      const contato = await addContato(leadId, quickContatoForm);
+      setInteractionForm((cur) => ({ ...cur, contato_id: contato.id }));
+      setQuickContatoOpen(false);
+      setQuickContatoForm(initialContato);
+      await reload();
+      showToast('Contato adicionado e vinculado a interacao.', 'success');
+    } catch (err) {
+      setQuickContatoError(err.message || 'Nao foi possivel salvar o contato.');
+    } finally {
+      setSavingQuickContato(false);
+    }
   }
 
   async function handleContatoSubmit(e) {
@@ -174,6 +217,8 @@ export default function LeadDetails() {
   function openInteractionForm(tipo = 'ligacao') {
     setInteractionForm((cur) => ({ ...initialInteraction, tipo }));
     setFormError('');
+    setQuickContatoOpen(false);
+    setQuickContatoError('');
     setFormOpen(true);
     setTimeout(() => document.querySelector('.interaction-form textarea')?.focus(), 50);
   }
@@ -465,10 +510,65 @@ export default function LeadDetails() {
                 <select name="contato_id" value={interactionForm.contato_id} onChange={updateInteraction}>
                   <option value="">Sem contato vinculado</option>
                   {lead.contatos.map((c) => (
-                    <option key={c.id} value={c.id}>{c.nome}</option>
+                    <option key={c.id} value={c.id}>
+                      {c.nome}{c.cargo ? ` - ${CARGO_LABEL[c.cargo] ?? c.cargo}` : ''}
+                    </option>
                   ))}
                 </select>
               </label>
+              <div className="form-field-action">
+                <span>Nao encontrou o contato?</span>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={openQuickContato}>
+                  <Plus size={14} /> Novo contato
+                </button>
+              </div>
+              {quickContatoOpen && (
+                <div className="quick-contact-box form-field-wide">
+                  <div className="quick-contact-header">
+                    <strong>Novo contato</strong>
+                    <button type="button" className="icon-btn" title="Fechar" onClick={() => setQuickContatoOpen(false)}>
+                      x
+                    </button>
+                  </div>
+                  {quickContatoError && <div className="form-alert">{quickContatoError}</div>}
+                  <div className="form-grid">
+                    <label>
+                      Nome *
+                      <input name="nome" value={quickContatoForm.nome} onChange={updateQuickContatoField} required />
+                    </label>
+                    <label>
+                      Cargo
+                      <select name="cargo" value={quickContatoForm.cargo} onChange={updateQuickContatoField}>
+                        <option value="">Selecione</option>
+                        {Object.entries(CARGO_LABEL).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                      </select>
+                    </label>
+                    <label>
+                      E-mail
+                      <input name="email" type="email" value={quickContatoForm.email} onChange={updateQuickContatoField} />
+                    </label>
+                    <label>
+                      Telefone
+                      <input name="telefone" value={quickContatoForm.telefone} onChange={updateQuickContatoField} placeholder="(00) 00000-0000" />
+                    </label>
+                    <label>
+                      WhatsApp
+                      <input name="whatsapp" value={quickContatoForm.whatsapp} onChange={updateQuickContatoField} placeholder="(00) 00000-0000" />
+                    </label>
+                    <label className="checkbox-field">
+                      <input name="eh_principal" type="checkbox" checked={quickContatoForm.eh_principal} onChange={updateQuickContatoField} />
+                      Contato principal
+                    </label>
+                  </div>
+                  <div className="form-actions">
+                    <button type="button" className="btn btn-ghost" onClick={() => setQuickContatoOpen(false)}>Cancelar</button>
+                    <Button type="button" disabled={savingQuickContato} onClick={handleQuickContatoSubmit}>
+                      <Save size={15} />
+                      {savingQuickContato ? 'Salvando...' : 'Adicionar e vincular'}
+                    </Button>
+                  </div>
+                </div>
+              )}
               <label className="form-field-wide">
                 Resumo *
                 <textarea
@@ -525,6 +625,7 @@ export default function LeadDetails() {
             {sortedInteractions.map((item) => {
               const def = TYPE_MAP[item.tipo] ?? { label: item.tipo, icon: ArrowLeftRight, color: '#557060' };
               const Icon = def.icon;
+              const contato = contatosById[item.contato_id];
               return (
                 <article key={item.id} className="interaction-item">
                   <div className="interaction-marker" style={{ background: def.color, boxShadow: `0 0 0 4px ${def.color}22` }} />
@@ -533,6 +634,7 @@ export default function LeadDetails() {
                       <div className="interaction-type-badge" style={{ background: `${def.color}15`, color: def.color }}>
                         <Icon size={13} />
                         {def.label}
+                        {contato ? ` com ${contato.nome}` : ''}
                       </div>
                       <span>{formatDate(item.data)}</span>
                     </header>

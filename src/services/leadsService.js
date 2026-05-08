@@ -75,7 +75,7 @@ export async function getLeadById(id) {
     .select(`
       *,
       contatos(id, nome, cargo, email, telefone, whatsapp, eh_principal, observacoes),
-      interacoes(id, tipo, data, resumo, proxima_acao, prazo_proxima_acao, responsavel_id),
+      interacoes(id, tipo, data, resumo, proxima_acao, prazo_proxima_acao, responsavel_id, contato_id),
       propostas(id, produto, valor_estimado, num_alunos_atendidos, status, data_envio, validade_ate)
     `)
     .eq('id', id)
