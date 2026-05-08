@@ -16,8 +16,9 @@ export default function EsqueciSenha() {
     try {
       await solicitarRedefinicaoSenha(email);
       setEnviado(true);
-    } catch {
-      setErro('Não foi possível enviar o e-mail. Verifique o endereço e tente novamente.');
+    } catch (error) {
+      console.error('Erro ao solicitar recuperação de senha:', error);
+      setErro(error?.message || 'Não foi possível enviar o e-mail. Verifique o endereço e tente novamente.');
     } finally {
       setCarregando(false);
     }

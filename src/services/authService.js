@@ -12,7 +12,8 @@ export async function logout() {
 }
 
 export async function solicitarRedefinicaoSenha(email) {
-  const redirectTo = `${window.location.origin}/redefinir-senha`;
+  const resetUrl = import.meta.env.VITE_PASSWORD_RESET_REDIRECT_URL;
+  const redirectTo = resetUrl || `${window.location.origin}/redefinir-senha`;
   const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
   if (error) throw error;
 }
